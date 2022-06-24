@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="junit5-camp" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="junit5-allure" target="11" />
+      <module name="junit5-assertions" target="11" />
+      <module name="junit5-jackson" target="11" />
+      <module name="junit5_demo" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="junit5-allure" options="-parameters" />
+      <module name="junit5-assertions" options="-parameters" />
+      <module name="junit5-camp" options="-parameters" />
+      <module name="junit5-jackson" options="-parameters" />
+      <module name="junit5-sample" options="" />
+      <module name="junit5_demo" options="-parameters" />
+    </option>
+  </component>
+</project>

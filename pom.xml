@@ -5,15 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.testeru</groupId>
-    <artifactId>junit5-samples</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>junit5-sample</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <modules>
         <module>junit5-assertions</module>
         <module>junit5-jackson</module>
         <module>junit5-basic</module>
         <module>junit5-allure</module>
+        <module>junit5-camp</module>
     </modules>
 
 
