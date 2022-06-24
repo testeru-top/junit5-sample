@@ -1,5 +1,6 @@
 package top.testeru;
 
+import io.qameta.allure.Step;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -26,6 +27,8 @@ public class MySUT {
     String name;
     //唯一ID标识
     String id;
+    private static ThreadLocal<String> threadLocalId = new ThreadLocal<String>();
+
 
 
     public String getName() {
@@ -52,16 +55,20 @@ public class MySUT {
 
     public void initId(){
         id = UUID.randomUUID().toString();
+        threadLocalId.set(id);
         logger.info("Generate ID：{} ", id);
 
     }
 
     public void destroyId() {
-        if (id == null) {
+        logger.info("Release ID: {} ", id);
+        threadLocalId.remove();
+
+ /*       if (id == null) {
             throw new IllegalArgumentException(name + " failed to initialize ID");
         }
         logger.info("Release ID: {} ", id);
-        id = null;
+        id = null;*/
     }
 
 
@@ -72,6 +79,7 @@ public class MySUT {
 
 
     //连续添加
+    @Step("")
     public int sum(int... numbers) {
         if(Arrays.stream(numbers).anyMatch(u -> u == 100)){
             logger.warn("integer is 100！");

@@ -1,16 +1,18 @@
 package top.testeru.num;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import top.testeru.basic.BasicTest;
 import top.testeru.selftag.BugTest;
 
+import static java.lang.Thread.sleep;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+@DisplayName("df")
 public class MySUTSubTest extends BasicTest {
 
     @Test
@@ -21,6 +23,12 @@ public class MySUTSubTest extends BasicTest {
 //            @Tag("bug")//有bug研发需要修复
     })
     void sub1Test(){
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("love:"+System.getProperty("love"));
         result = mySUT.subtract(20,10,30);
         //JUnit5断言 expected：期望值,  actual：业务代码实际结果,  message：断言失败的时候显示说明的语句
         assertEquals(40,result, "The result of sub two numbers is wrong");
@@ -33,19 +41,29 @@ public class MySUTSubTest extends BasicTest {
     @Tag("sub")
     @Tag("qa1")
     void sub2Test(){
-        result = mySUT.subtract(20,10,30);
+        result = mySUT.subtract(40,10,30);
         //JUnit5断言 expected：期望值,  actual：业务代码实际结果,  message：断言失败的时候显示说明的语句
         assertEquals(20,result, "The result of sub two numbers is wrong");
         int re1 = mySUT.subtract(10,10,30);
         System.out.println(re1);
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         //hamcrest断言
-        assertThat( "The result of sub two numbers is wrong",result , is(equalTo(40)));
+        assertThat( "The result of sub two numbers is wrong",result , is(equalTo(20)));
         assertThat( "The result of sub two numbers is wrong",result , is(lessThanOrEqualTo(100)));
     }
     @BugTest
     @Tag("sub")
     @Tag("qa1")
     void sub3Test(){
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         result = mySUT.subtract(20,10,30);
         int re1 = mySUT.subtract(10,10,30);
         System.out.println(re1);

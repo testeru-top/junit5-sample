@@ -2,12 +2,14 @@ package top.testeru.basic;
 
 import junit.framework.Test;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.slf4j.Logger;
 import top.testeru.MySUT;
 
 import java.lang.reflect.Method;
 
 import static java.lang.invoke.MethodHandles.lookup;
+import static org.junit.jupiter.api.parallel.ResourceAccessMode.READ_WRITE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -55,6 +57,7 @@ public class BasicTest {
     //static修饰 返回值为void @与BeforeAll注解对应，只在最后的时候运行一次 static静态方法加载的优先级高于非静态方法
     //作用：测试用例中，apk的卸载，app退出在这里
     @AfterAll
+//    @ResourceLock(value = , mode = READ_WRITE)
     public static void afterAll(){
         //7.销毁ID
         mySUT.destroyId();

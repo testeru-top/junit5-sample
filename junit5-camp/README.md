@@ -44,6 +44,7 @@
   - `MethodSource`：提供参数源的注解
     - 参数方法与测试方法同名，则直接默认
     - 参数方法与测试方法名不同，则需要在括号内指定参数方法名
+    - `@MethodSource("包名.类名#方法名")`
 ## suite套件管理测试集
 - 8.使用`suite`套件运行测试集
   - `SelectClasses`
@@ -115,4 +116,41 @@
 - 5.`yaml` 文件解析：`MySUTAddYamlTest`
 - 6.正常用例与异常测试合并：
   - `MySUTAddYamlTest`
+
+## 
+-D代表（Properties属性）
+## 生成Allure报告
+- `allure server`配置到项目中
+```xml
+
+<properties>
+    <allure.version>2.17.2</allure.version>
+    <allure.cmd.download.url>
+        https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline
+    </allure.cmd.download.url>
+</properties>
+
+<dependency>
+  <groupId>io.qameta.allure</groupId>
+  <artifactId>allure-junit5</artifactId>
+  <version>${allure.version}</version>
+</dependency>
+
+<plugin>
+  <groupId>io.qameta.allure</groupId>
+  <artifactId>allure-maven</artifactId>
+  <version>2.10.0</version>
+  <configuration>
+    <reportVersion>${allure.version}</reportVersion>
+    <allureDownloadUrl>${allure.cmd.download.url}/${allure.version}/allure-commandline-${allure.version}.zip</allureDownloadUrl>
+  </configuration>
+</plugin>
+```
+
+
+- 使用maven相关命令运行：
+  - `mvn clean test -Dtest=具体运行的类 allure:report`
+    - 生成的报告要配置在target下：`allure.results.directory=target/allure-results`
+  - `mvn allure:serve`
+    - 对应项目下有一个.allure文件夹，里面会有当前pom文件依赖的版本
 ## 动态生成测试用例

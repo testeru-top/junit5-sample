@@ -21,7 +21,7 @@ datas:
     message: 有效边界值相加【-98,-98】
   - a: 99
     b: 0
-    result:
+    result: 0
     message: 无效边界值相加【99,0】
   - a: -99
     b: -1

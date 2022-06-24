@@ -3,6 +3,7 @@ package top.testeru.num;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -54,7 +55,7 @@ public class MySUTAddYamlTest extends BasicTest {
     }
     @DisplayName("yaml数据驱动")
     @ParameterizedTest
-    @MethodSource("sumData")
+    @MethodSource("top.testeru.basic.ParamArguments#sumData")
     void sumTest(Data data){
         int result = mySUT.sum(data.getA(), data.getB());
          //断言失败带提示消息
@@ -67,9 +68,6 @@ public class MySUTAddYamlTest extends BasicTest {
                 () -> assertThat(result).isGreaterThan(1).isLessThan(3)
         );
     }
-    static Stream<Data> sumData(){
-        return getSumData().getDatas().stream();
-    }
 
 
 
@@ -78,18 +76,36 @@ public class MySUTAddYamlTest extends BasicTest {
     //方法的参数为多个对应变量
     @DisplayName("yaml文件解析为对应变量")
     @ParameterizedTest(name = "[{index}] {0} + {1} = {2}")
-    @MethodSource("sumArgData")
+    @MethodSource("top.testeru.basic.ParamArguments#sumArgData")
     void sumArgTest(int a, int b, int re, String message){
         int result = mySUT.sum(a, b);
         //hamcrest断言数字计算
         assertThat(message, result, equalTo(re));
     }
+    //方法的参数为多个对应变量
+    @DisplayName("yaml文件解析为对应变量")
+    @ParameterizedTest(name = "[{index}] {0} + {1} = {2}")
+    @MethodSource("top.testeru.basic.ParamArguments#sumArgData")
+    void sumArgAllTest(int a, int b, int re, String message){
+        if(message.startsWith("无效")){
+            Exception exception = assertThrowsExactly(
+                    IllegalArgumentException.class, () -> mySUT.sum(a, b));
+            //hamcrest断言
+            assertThat("The result of adding two numbers is wrong",
+                    exception.getMessage() ,
+                    Matchers.is(containsString("Please enter an integer in the range")));
 
+        }else {
+            result = mySUT.sum(a, b);
+            //hamcrest断言数字计算
+            assertThat(message, result, equalTo(re));
+        }
+    }
 
     //    方法参数为对象
     @DisplayName("方法参数为对象")
     @ParameterizedTest(name = "[{index}] {0} + {1} = {2}")
-    @MethodSource("sumArgData")
+    @MethodSource("top.testeru.basic.ParamArguments#sumArgData")
     void sumArgTest(@AggregateWith(SumAggregator.class)Data data){
         int result = mySUT.sum(data.getA(), data.getB());
         //hamcrest断言数字计算
@@ -99,37 +115,15 @@ public class MySUTAddYamlTest extends BasicTest {
     //自定义注解优化
     @DisplayName("方法参数为对象-优化")
     @ParameterizedTest(name = "[{index}] {0} + {1} = {2}")
-    @MethodSource("sumArgData")
+    @MethodSource("top.testeru.basic.ParamArguments#sumArgData")
     void sumArgOptimalTest(@YamlToSum Data data){
         int result = mySUT.sum(data.getA(), data.getB());
         //hamcrest断言数字计算
         assertThat(data.getMessage(),result, equalTo(data.getResult()));
     }
 
-    //参数化Arguments
-    static Collection<Arguments> sumArgData(){
-        List<Data> dataList = getSumData().getDatas();
-        Collection<Arguments> argumentsCollection = new ArrayList<>();
-        dataList.forEach(data -> {
-            Arguments arguments = Arguments.arguments(
-                    data.getA(), data.getB(), data.getResult(), data.getMessage()
-            );
-            argumentsCollection.add(arguments);
-        });
-        return argumentsCollection;
-    }
 
-    private static Sum getSumData() {
-        Sum sum = null;
-        try {
-            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-            TypeReference<Sum> typeReference = new TypeReference<>() {
-            };
-            sum = mapper.readValue(new File("src/test/resources/yaml/sum.yaml"), typeReference);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sum;
-    }
+
+
 }
 
